@@ -9,32 +9,7 @@
   grid-gap: 10px;
 }
 
-.header {
-  grid-area: h;
-  background-color: rgb(153, 153, 224);
-}
-
-.header img {
-  width: 40px;
-  margin: 10px;
-}
-
-.nav {
-  grid-area: n;
-  background-color: rgb(180, 197, 218);
-}
-
-.content {
+.app-wrapper-content {
   grid-area: c;
   background-color: rgb(220, 220, 246);
-}
-
-.content .main {
-  width: 1200px;
-  height: 200px;
-}
-
-.content .ava {
-  width: 100px;
-  height: 110px;
 }
