@@ -3,16 +3,26 @@ import Post from "../MyPosts/Posts/Post";
 import classes from "./MyPosts.module.css";
 
 const MyPosts = (props) => {
+  let postsData = [
+    { id: 1, message: "How are you?", likesCount: 12 },
+    { id: 1, message: "I like the world", likesCount: 11 }
+  ];
+
+  let postsElement = postsData.map((post) => (
+    <Post message={post.message} like={post.likesCount} />
+  ));
   return (
     <>
       <div>My posts</div>
       <div>
-        <textarea></textarea>
-        <button>send</button>
+        <div>
+          <textarea></textarea>
+        </div>
+        <div>
+          <button>send</button>
+        </div>
       </div>
-
-      <Post message="It's my first post!" like="5" />
-      <Post message="How are you?" like="3" />
+      {postsElement}
     </>
   );
 };
