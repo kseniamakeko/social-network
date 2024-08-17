@@ -1,13 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import state from "./components/Redux/State";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// let posts = [
+//   { id: 1, message: "How are you?", likesCount: 12 },
+//   { id: 1, message: "I like the world", likesCount: 11 }
+// ];
+
+// let dialogsData = [
+//   { id: 1, name: "Mila" },
+//   { id: 2, name: "Eugine" },
+//   { id: 3, name: "Scott" },
+//   { id: 4, name: "Graham" }
+// ];
+
+// let messagesData = [
+//   { id: 1, message: "Hi" },
+//   { id: 1, message: "What's new?" },
+//   { id: 1, message: "What's about meeting?" }
+// ];
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <App state={state} />
   </React.StrictMode>
 );
 
