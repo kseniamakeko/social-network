@@ -19,7 +19,14 @@ const App = (props) => {
           <Route
             exact
             path="/dialogs"
-            element={<Dialogs store={props.store} />}
+            element={
+              <Dialogs
+                store={props.store}
+                dialogsData={props.state.messages.dialogsData}
+                messagesData={props.state.messages.messagesData}
+                newMessageBody={props.state.messages.newMessageBody}
+              />
+            }
           />
           <Route
             exact
