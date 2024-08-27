@@ -6,39 +6,37 @@ import Dialogs from "./components/Dialogs/Dialogs";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
 const App = (props) => {
   return (
-    <BrowserRouter>
-      <div className="app-wrapper">
-        <Header />
-        <Nav />
-        <div className="app-wrapper-content">
-          <Routes>
-            <Route
-              exact
-              path="/dialogs"
-              element={
-                <Dialogs
-                  dialogsData={props.state.messagesPage.dialogsData}
-                  messagesData={props.state.messagesPage.messagesData}
-                />
-              }
-            />
-            <Route
-              exact
-              path="/profile"
-              element={<Profile posts={props.state.profilePage.posts} />}
-            />
-            <Route exact path="/news" element={<News />} />
-            <Route exact path="/music" element={<Music />} />
-            <Route exact path="/settings" element={<Settings />} />
-          </Routes>
-        </div>
+    <div className="app-wrapper">
+      <Header />
+      <Nav />
+      <div className="app-wrapper-content">
+        <Routes>
+          <Route
+            exact
+            path="/dialogs"
+            element={<Dialogs store={props.store} />}
+          />
+          <Route
+            exact
+            path="/profile"
+            element={
+              <Profile
+                posts={props.state.profile.posts}
+                dispatch={props.dispatch}
+              />
+            }
+          />
+          <Route exact path="/news" element={<News />} />
+          <Route exact path="/music" element={<Music />} />
+          <Route exact path="/settings" element={<Settings />} />
+        </Routes>
       </div>
-    </BrowserRouter>
+    </div>
   );
 };
 
