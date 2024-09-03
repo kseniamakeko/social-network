@@ -13,16 +13,16 @@ let initialState = {
     { id: 2, message: "What's new?" },
     { id: 3, message: "What's about meeting?" }
   ],
-  newMassageBody: ""
+  newMessageBody: ""
 };
 
 const messagesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEND_MESSAGE: {
-      let body = state.newMassageBody;
+      let body = state.newMessageBody;
       return {
         ...state,
-        newMassageBody: "",
+        newMessageBody: "",
         messagesData: [
           ...state.messagesData,
           { id: state.messagesData.length + 1, message: body }
@@ -30,7 +30,7 @@ const messagesReducer = (state = initialState, action) => {
       };
     }
     case UPDATE_NEW_MESSAGE_BODY: {
-      return { ...state, newMassageBody: action.body };
+      return { ...state, newMessageBody: action.body };
     }
     default:
       return state;
