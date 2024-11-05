@@ -1,5 +1,16 @@
 .users img {
-  width: 70px;
-  height: 95px;
+  width: 80px;
+  height: 80px;
   border-radius: 20px;
+}
+
+.page {
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.selectedPage {
+  font-weight: bold;
+  color: rgb(14, 175, 84);
+  border-bottom: 2px solid rgb(14, 175, 84);
 }

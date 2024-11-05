@@ -1,81 +1,86 @@
 import React from "react";
+import userPhoto from "../../assets/image/userPic.png";
 import classes from "./Users.module.css";
+import { NavLink } from "react-router-dom";
 
 const Users = (props) => {
-  if (props.users.length === 0) {
-    props.setUsers([
-      {
-        id: 1,
-        photoUrl:
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2864&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        followed: false,
-        fullName: "Ksenia",
-        status: "Everything at once",
-        location: { country: "Kazakhstan", city: "Astana" }
-      },
-      {
-        id: 2,
-        photoUrl:
-          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFjZXxlbnwwfHwwfHx8MA%3D%3D",
-        followed: true,
-        fullName: "Anatolii",
-        status: "I can",
-        location: { country: "Kazakhstan", city: "Astana" }
-      },
-      {
-        id: 3,
-        photoUrl:
-          "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=3086&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        followed: true,
-        fullName: "Julia",
-        status: "Work",
-        location: { country: "USA", city: "Los-Angeles" }
-      }
-    ]);
-  }
+  let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+  let pages = [];
+  for (let i = 1; i <= pagesCount; i++) {
+    pages.push([i]);
 
-  return (
-    <div className={classes.users}>
-      {props.users.map((u) => (
-        <div key={u.id}>
-          <span>
-            <div>
-              <img src={u.photoUrl} />
-            </div>
-            <div>
-              {u.followed ? (
-                <button
-                  onClick={() => {
-                    props.unfollow(u.id);
-                  }}
-                >
-                  unfollow
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    props.follow(u.id);
-                  }}
-                >
-                  follow
-                </button>
-              )}
-            </div>
-          </span>
-          <span>
-            <span>
-              <div>{u.fullName}</div>
-              <div>{u.status}</div>
+    return (
+      <>
+        <div className={classes.users}>
+          {pages.map((page) => (
+            <span
+              key={page}
+              className={
+                props.currentPage === page
+                  ? `${classes.page} ${classes.selectedPage}`
+                  : classes.page
+              }
+              onClick={() => {
+                props.onPageChaged(page);
+              }}
+            >
+              {page}
             </span>
-            <span>
-              <div>{u.location.country}</div>
-              <div>{u.location.city}</div>
-            </span>
-          </span>
+          ))}
+
+          {props.users.map((u) => (
+            <div key={u.id}>
+              <span>
+                <div>
+                  <NavLink to={`/profile/${u.id}`}>
+                    <img
+                      src={u.photos.small !== null ? u.photos.small : userPhoto}
+                      alt=""
+                    />
+                  </NavLink>
+                </div>
+                <div>
+                  {u.followed ? (
+                    <button
+                      disabled={props.followingInProgress.some(
+                        (id) => id === u.id
+                      )}
+                      onClick={() => {
+                        props.unfollow(u.id);
+                      }}
+                    >
+                      unfollow
+                    </button>
+                  ) : (
+                    <button
+                      disabled={props.followingInProgress.some(
+                        (id) => id === u.id
+                      )}
+                      onClick={() => {
+                        props.follow(u.id);
+                      }}
+                    >
+                      follow
+                    </button>
+                  )}
+                </div>
+              </span>
+              <span>
+                <span>
+                  <div>{u.name}</div>
+                  <div>{u.status}</div>
+                </span>
+                <span>
+                  <div>{"u.location.country"}</div>
+                  <div>{"u.location.city"}</div>
+                </span>
+              </span>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  );
+      </>
+    );
+  }
 };
 
 export default Users;

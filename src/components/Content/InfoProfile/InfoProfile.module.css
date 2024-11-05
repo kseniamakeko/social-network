@@ -1,9 +1,16 @@
-.main {
+.main img {
   width: 1200px;
   height: 200px;
 }
 
-.ava {
-  width: 100px;
-  height: 110px;
+.ava img {
+  width: 200px;
+  height: 220px;
+  border-radius: 10px;
+}
+
+.aboutme {
+  margin: 5px;
+  padding: 5px;
+  width: 200px;
 }
