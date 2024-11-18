@@ -1,9 +1,18 @@
 .item {
   color: rgb(44, 43, 43);
+  margin-left: 20px;
 }
 
 .item img {
   width: 40px;
   height: 40px;
   border-radius: 20px;
+  margin: 0 10px;
+}
+
+.likes {
+  display: flex;
+  justify-content: flex-end;
+  width: 25%;
+  align-items: center;
 }

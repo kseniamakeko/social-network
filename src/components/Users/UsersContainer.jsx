@@ -4,35 +4,30 @@ import {
   unfollow,
   setCurrentPage,
   setFollowingProgress,
-  getUsers
+  requestUsers
 } from "../Redux/UsersReducer";
 import React from "react";
 import Users from "./Users";
-import withAuthNavigate from "../../hoc/withAuthNavigate";
 import Preloader from "../ui/preloader/Preloader";
 import { compose } from "redux";
+import {
+  getUsers,
+  followingInProgress,
+  getCurrentPage,
+  getPageSize,
+  getTotalUsersCount,
+  getIsFetching
+} from "../Redux/users-selectors";
 
 class UsersContainer extends React.Component {
   componentDidMount() {
-    this.props.getUsers(this.props.currentPage, this.props.pageSize);
-    // this.props.setIsFetching(true);
-    // usersApi
-    //   .getUsers(this.props.currentPage, this.props.pageSize)
-    //   .then((data) => {
-    //     this.props.setIsFetching(false);
-    //     this.props.setUsers(data.items);
-    //     this.props.setTotalUsersCount(data.totalCount);
-    //   });
+    console.log("this.props in componentDidMount:", this.props);
+    this.props.requestUsers(this.props.currentPage, this.props.pageSize);
   }
 
-  onPageChaged = (pageNumber) => {
-    this.props.getUsers(pageNumber, this.props.pageSize);
-    // this.props.setIsFetching(true);
-    // this.props.setCurrentPage(pageNumber);
-    // usersApi.getUsers(pageNumber, this.props.pageSize).then((data) => {
-    //   this.props.setIsFetching(false);
-    //   this.props.setUsers(data.items);
-    // });
+  onPageChanged = (pageNumber) => {
+    console.log("this.props in componentDidMount:", this.props);
+    this.props.requestUsers(pageNumber, this.props.pageSize);
   };
 
   render() {
@@ -43,7 +38,7 @@ class UsersContainer extends React.Component {
           totalUsersCount={this.props.totalUsersCount}
           pageSize={this.props.pageSize}
           currentPage={this.props.currentPage}
-          onPageChaged={this.onPageChaged}
+          onPageChanged={this.onPageChanged}
           users={this.props.users}
           follow={this.props.follow}
           unfollow={this.props.unfollow}
@@ -55,48 +50,17 @@ class UsersContainer extends React.Component {
 }
 
 const mapStatetoProps = (state) => {
+  console.log("State in mapStateToProps:", state);
+
   return {
-    users: state.users.users,
-    pageSize: state.users.pageSize,
-    totalUsersCount: state.users.totalUsersCount,
-    currentPage: state.users.currentPage,
-    isFetching: state.users.isFetching,
-    followingInProgress: state.users.followingInProgress
+    users: getUsers(state),
+    pageSize: getPageSize(state),
+    totalUsersCount: getTotalUsersCount(state),
+    currentPage: getCurrentPage(state) || 10,
+    isFetching: getIsFetching(state) || false,
+    followingInProgress: followingInProgress(state)
   };
 };
-
-// const mapDispatchtoProps = (dispatch) => {
-//   return {
-//     follow: (userId) => {
-//       dispatch(followAC(userId));
-//     },
-//     unfollow: (users) => {
-//       dispatch(unfollowAC(users));
-//     },
-//     setUsers: (users) => {
-//       dispatch(setUsersAC(users));
-//     },
-//     setCurrentPage: (pageNumber) => {
-//       dispatch(setCurrentPageAC(pageNumber));
-//     },
-//     setTotalUsersCount: (totalCount) => {
-//       dispatch(setTotalUsersCountAC(totalCount));
-//     },
-//     setIsFetchingAC: (isFetching) => {
-//       dispatch(setIsFetchingAC(isFetching));
-//     }
-//   };
-// };
-
-// export default withAuthNavigate(
-//   connect(mapStatetoProps, {
-//     follow,
-//     unfollow,
-//     setCurrentPage,
-//     setFollowingProgress,
-//     getUsers
-//   })(UsersContainer)
-// );
 
 export default compose(
   connect(mapStatetoProps, {
@@ -104,7 +68,6 @@ export default compose(
     unfollow,
     setCurrentPage,
     setFollowingProgress,
-    getUsers
-  }),
-  withAuthNavigate
+    requestUsers
+  })
 )(UsersContainer);

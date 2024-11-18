@@ -1,4 +1,5 @@
 import React from "react";
+import classes from "./InfoProfile.module.css";
 
 class ProfileStatus extends React.Component {
   state = {
@@ -28,12 +29,11 @@ class ProfileStatus extends React.Component {
     if (prevProps.status !== this.props.status) {
       this.setState({ status: this.props.status });
     }
-    console.log("componetnDidUpdate");
   }
 
   render() {
     return (
-      <div>
+      <div className={classes.status}>
         {!this.state.editMode && (
           <div>
             <span onDoubleClick={this.activaiteEditMode}>

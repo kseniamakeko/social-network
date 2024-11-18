@@ -1,34 +1,46 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import validationSchemaLoginForm from "./FormValidation/SchemaLoginForm";
-
+import { Navigate } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { Formik, Form, Field } from "formik";
+import validationSchemaLoginForm from "../../utils/validators/SchemaLoginForm";
+import validateEmail from "../../utils/validators/validators";
+import { Input } from "../common/FormsControls/FormsControls";
+import { login } from "../Redux/AuthReducer";
 import classes from "./Login.module.css";
 
-const validateEmail = (values) => {
-  const errors = {};
-  if (!values.email) {
-    errors.email = "Required";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-    errors.email = "Invalid email address";
-  }
-  return errors;
-};
+const Login = (props) => {
+  const dispatch = useDispatch();
 
-const Login = () => {
+  if (props.isAuth) {
+    return <Navigate to={"/profile"} />;
+  }
+
+  const handleSubmit = (values, { setSubmitting, setStatus }) => {
+    dispatch(
+      login(
+        values.email,
+        values.password,
+        values.rememberMe,
+        setSubmitting,
+        setStatus
+      )
+    );
+  };
   return (
     <div>
       <Formik
         initialValues={{ email: "", password: "", rememberMe: false }}
         validate={validateEmail}
         validationSchema={validationSchemaLoginForm}
-        onSubmit={(values) => {
-          console.log("Form submitted:", values);
-        }}
+        onSubmit={handleSubmit}
       >
-        {() => (
+        {({ isSubmitting, status }) => (
           <>
             <h1 className={classes.title}>Login</h1>
-            <LoginForm />
+            <LoginForm isSubmitting={isSubmitting} />
+            {status && (
+              <div className={classes["form-summary-error"]}>{status}</div>
+            )}
           </>
         )}
       </Formik>
@@ -36,37 +48,44 @@ const Login = () => {
   );
 };
 
-const LoginForm = () => {
+const LoginForm = ({ isSubmitting }) => {
   return (
     <Form className={classes.loginContainer}>
       <div className={classes.formField}>
-        <Field name={"email"} type={"text"} placeholder={"Email"} />
-        <ErrorMessage
-          name="email"
-          component="div"
-          className={classes.errorMessage}
+        <Field
+          name={"email"}
+          type={"text"}
+          placeholder={"Email"}
+          component={Input}
         />
       </div>
-
       <div className={classes.formField}>
-        <Field name={"password"} type={"password"} placeholder={"Password"} />
-        <ErrorMessage
-          name="password"
-          component="div"
-          className={classes.errorMessage}
+        <Field
+          name={"password"}
+          type={"password"}
+          placeholder={"Password"}
+          component={Input}
         />
       </div>
-
       <div className={classes.checkboxContainer}>
         <Field type={"checkbox"} name={"rememberMe"} id="rememberMe" />
         <label htmlFor="rememberMe">Remember Me</label>
       </div>
-
       <div>
-        <button type={"submit"}>Login</button>
+        <button
+          className={classes.loginButtonForm}
+          type={"submit"}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Logging in..." : "Login"}
+        </button>
       </div>
     </Form>
   );
 };
 
-export default Login;
+const mapStatetoProps = (state) => ({
+  isAuth: state.auth.isAuth
+});
+
+export default connect(mapStatetoProps, { login })(Login);

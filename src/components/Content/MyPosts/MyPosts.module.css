@@ -12,3 +12,65 @@
   width: 100px;
   height: 110px;
 }
+
+.postBlock {
+  margin-left: 20px;
+}
+
+.postBlock h3 {
+  margin: 0;
+}
+
+.form__container {
+  margin-bottom: 15px;
+}
+
+.form__post {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  max-width: 250px;
+  padding: 1rem;
+  background-color: transparent;
+}
+
+.textarea__post[name="post"] {
+  width: 100%;
+  min-height: 50px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-bottom: 0.5rem;
+}
+.buttonPost[type="submit"] {
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buttonPost[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.buttonPostDisabled {
+  background-color: #cccccc !important;
+  color: rgb(103, 102, 102) !important;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.error {
+  color: red;
+  border: 1px solid red;
+}

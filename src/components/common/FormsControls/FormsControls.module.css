@@ -1,0 +1,28 @@
+.form-control.error input,
+.form-control.error textarea {
+  border: 1px solid red;
+}
+
+.form-control.error span {
+  color: red;
+  margin-top: 5px;
+}
+
+.formField {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #6200ff;
+}

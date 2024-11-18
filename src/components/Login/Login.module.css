@@ -1,8 +1,6 @@
-/* LoginForm.module.css */
-
 .loginContainer {
   max-width: 400px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 2rem;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -22,32 +20,13 @@
   flex-direction: column;
 }
 
-input[type="text"],
-input[type="password"] {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus {
-  outline: none;
-  border-color: #6200ff;
-}
-
-.errorMessage {
-  color: red;
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-}
-
 .checkboxContainer {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-button {
+.loginButtonForm {
   width: 100%;
   padding: 0.5rem;
   background-color: #6200ff;
@@ -59,6 +38,14 @@ button {
   transition: background-color 0.3s;
 }
 
-button:hover {
+.loginButtonForm:hover {
   background-color: #3f0996;
+}
+
+.form-summary-error {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  color: white;
+  background-color: rgb(190, 12, 12);
 }

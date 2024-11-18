@@ -10,8 +10,6 @@
 .dialog-items .active {
   color: aqua;
 }
-.messages {
-}
 
 .messages .dialog {
   padding: 10px;
@@ -23,4 +21,55 @@
 
 .text {
   margin-left: 15px;
+  color: black;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.textarea {
+  width: 50%;
+  min-height: 60px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.textarea:focus {
+  border-color: #007bff;
+}
+
+.sendButton {
+  align-self: flex-start;
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sendButton:hover {
+  background-color: #0056b3;
+}
+
+.sendButtonDisabled {
+  background-color: #cccccc !important;
+  color: rgb(103, 102, 102) !important;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.875rem;
+  margin: 5px 0;
 }

@@ -5,15 +5,15 @@ const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
-const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const SET_IS_FETCHING = "SET_IS_FETCHING";
 const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS";
 
-let initialState = {
+const initialState = {
   users: [],
-  pageSize: 5,
+  pageSize: 10,
   totalUsersCount: 0,
   currentPage: 1,
-  isFetching: true,
+  isFetching: false,
   followingInProgress: []
 };
 
@@ -43,7 +43,7 @@ const usersReducer = (state = initialState, action) => {
     }
 
     case SET_USERS: {
-      return { ...state, users: action.users };
+      return { ...state, users: action.payload.users };
     }
 
     case SET_CURRENT_PAGE: {
@@ -51,11 +51,11 @@ const usersReducer = (state = initialState, action) => {
     }
 
     case SET_TOTAL_USERS_COUNT: {
-      return { ...state, totalUsersCount: action.count };
+      return { ...state, totalUsersCount: action.payload.totalUsersCount };
     }
 
-    case TOGGLE_IS_FETCHING: {
-      return { ...state, isFetching: action.isFetching };
+    case SET_IS_FETCHING: {
+      return { ...state, isFetching: action.payload };
     }
     case TOGGLE_IS_FOLLOWING_PROGRESS: {
       return {
@@ -65,7 +65,6 @@ const usersReducer = (state = initialState, action) => {
           : state.followingInProgress.filter((id) => id !== action.userId)
       };
     }
-
     default:
       return state;
   }
@@ -83,7 +82,7 @@ export const unfollowSucess = (userId) => ({
 
 export const setUsers = (users) => ({
   type: SET_USERS,
-  users
+  payload: { users }
 });
 export const setCurrentPage = (currentPage) => ({
   type: SET_CURRENT_PAGE,
@@ -92,12 +91,12 @@ export const setCurrentPage = (currentPage) => ({
 
 export const setTotalUsersCount = (totalUsersCount) => ({
   type: SET_TOTAL_USERS_COUNT,
-  count: totalUsersCount
+  payload: totalUsersCount
 });
 
 export const setIsFetching = (isFetching) => ({
-  type: TOGGLE_IS_FETCHING,
-  count: isFetching
+  type: SET_IS_FETCHING,
+  payload: isFetching
 });
 export const setFollowingProgress = (isFetching, userId) => ({
   type: TOGGLE_IS_FOLLOWING_PROGRESS,
@@ -105,14 +104,13 @@ export const setFollowingProgress = (isFetching, userId) => ({
   userId
 });
 
-export const getUsers = (currentPage, pageSize) => {
-  return (dispatch) => {
+export const requestUsers = (page, pageSize) => {
+  return async (dispatch) => {
     dispatch(setIsFetching(true));
-    usersApi.getUsers(currentPage, pageSize).then((data) => {
-      dispatch(setIsFetching(false));
-      dispatch(setUsers(data.items));
-      dispatch(setTotalUsersCount(data.totalCount));
-    });
+
+    const data = await usersApi.getUsers(page, pageSize);
+    dispatch(setUsers(data.items));
+    dispatch(setIsFetching(false));
   };
 };
 

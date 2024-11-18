@@ -6,19 +6,23 @@ import {
   getUserProfile,
   updateStatus
 } from "../Redux/ProfileReducer";
-import { useParams } from "react-router-dom";
-import withAuthNavigate from "../../hoc/withAuthNavigate";
+import { useParams, useNavigate } from "react-router-dom";
 import { compose } from "redux";
 
 function ProfileContainer(props) {
-  let { userId } = useParams();
-  if (!userId) {
-    userId = 31719;
-  }
+  const { userId } = useParams();
+  const navigate = useNavigate();
+
+  const finalUserId = userId || props.authorizedUserId;
+
   useEffect(() => {
-    props.getUserProfile(userId);
-    props.getStatus(userId);
-  }, []);
+    if (!props.isAuth) {
+      navigate("/login");
+      return;
+    }
+    props.getUserProfile(finalUserId);
+    props.getStatus(finalUserId);
+  }, [finalUserId, props.isAuth, navigate]);
 
   return (
     <div>
@@ -34,10 +38,11 @@ function ProfileContainer(props) {
 
 let mapStateToProps = (state) => ({
   profile: state.profile.profile,
-  status: state.profile.status
+  status: state.profile.status,
+  authorizedUserId: state.auth.userId,
+  isAuth: state.auth.isAuth
 });
 
 export default compose(
-  connect(mapStateToProps, { getUserProfile, getStatus, updateStatus }),
-  withAuthNavigate
+  connect(mapStateToProps, { getUserProfile, getStatus, updateStatus })
 )(ProfileContainer);
