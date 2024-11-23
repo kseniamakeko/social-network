@@ -3,31 +3,26 @@ import Preloader from "../../ui/preloader/Preloader";
 import ProfileStatusHooks from "./ProfileStatusHooks";
 import classes from "./InfoProfile.module.css";
 
-const InfoProfile = (props) => {
-  if (!props.profile) {
+const InfoProfile = ({ profile, status, updateStatus }) => {
+  if (!profile) {
     return <Preloader />;
   }
   return (
     <div>
-      <div className={classes.main}>
-        {/* <img
-          src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2948&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="profile"
-        /> */}
-      </div>
+      <div className={classes.main}></div>
       <div className={classes.ava}>
         <div>
-          <h2 className={classes.name}>{props.profile.fullName}</h2>
+          <h2 className={classes.name}>{profile.fullName}</h2>
         </div>
-        <img src={props.profile.photos.large} alt="wall" />
+        <img src={profile.photos.large} alt="wall" />
         <ProfileStatusHooks
-          status={props.status}
-          updateStatus={props.updateStatus}
+          status={status}
+          updateStatus={updateStatus}
           className={classes.status}
         />
-        <div>{props.profile.contacts.facebook}</div>
-        <div>{props.profile.contacts.vk}</div>
-        <div>{props.profile.contacts.twitter}</div>
+        <div>{profile.contacts.facebook}</div>
+        <div>{profile.contacts.vk}</div>
+        <div>{profile.contacts.twitter}</div>
       </div>
     </div>
   );

@@ -36,48 +36,43 @@ export const setAuthUserData = (userId, email, login, isAuth) => ({
   payload: { userId, email, login, isAuth }
 });
 
-export const getAuthUserData = (userId, email, login) => (dispatch) => {
-  return authApi.getMe(userId, email, login).then((response) => {
-    if (response.data.resultCode === 0) {
-      let { id, email, login } = response.data.data;
-      dispatch(setAuthUserData(id, email, login, true));
-    }
-  });
+export const getAuthUserData = () => async (dispatch) => {
+  let response = await authApi.getMe();
+  if (response.data.resultCode === 0) {
+    let { id, email, login } = response.data.data;
+    dispatch(setAuthUserData(id, email, login, true));
+  }
 };
 
 export const login =
-  (email, password, rememberMe, setSubmitting, setStatus) => (dispatch) => {
-    authApi
-      .login(email, password, rememberMe)
-      .then((response) => {
-        if (response.data.resultCode === 0) {
-          dispatch(getAuthUserData());
-          setStatus(null);
-        } else {
-          // Display the first message from the server response
-          const errorMessage =
-            response.data.messages.length > 0
-              ? response.data.messages[0]
-              : "An error occurred. Please try again.";
-          setStatus(errorMessage); // Set the error message to Formik's status
-        }
-      })
-      .catch((error) => {
-        // Handle unexpected errors
-        console.error("Login error:", error);
-        setStatus("An unexpected error occurred. Please try again.");
-      })
-      .finally(() => {
-        setSubmitting(false); // Stop the submission spinner
-      });
+  (email, password, rememberMe, setSubmitting, setStatus) =>
+  async (dispatch) => {
+    try {
+      const response = await authApi.login(email, password, rememberMe);
+
+      if (response.data.resultCode === 0) {
+        dispatch(getAuthUserData());
+        setStatus(null);
+      } else {
+        const errorMessage =
+          response.data.messages.length > 0
+            ? response.data.messages[0]
+            : "An error occurred. Please try again.";
+        setStatus(errorMessage);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setStatus("An unexpected error occurred. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-export const logout = () => (dispatch) => {
-  authApi.logout().then((response) => {
-    if (response.data.resultCode === 0) {
-      dispatch(resetAuthDataCA());
-    }
-  });
+export const logout = () => async (dispatch) => {
+  let response = await authApi.logout();
+  if (response.data.resultCode === 0) {
+    dispatch(resetAuthDataCA());
+  }
 };
 
 export default authReducer;

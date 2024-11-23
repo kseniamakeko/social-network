@@ -1,8 +1,4 @@
-import {
-  applyMiddleware,
-  combineReducers,
-  configureStore
-} from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import profileReducer from "./ProfileReducer";
 import messagesReducer from "./MessagesReducer";
 import usersReducer from "./UsersReducer";
@@ -18,11 +14,18 @@ let reducers = combineReducers({
   app: appReducer
 });
 
-let store = configureStore({
+// let store = configureStore({
+//   reducer: reducers,
+//   thunkMiddleware: applyMiddleware(thunkMiddleware)
+// });
+
+const store = configureStore({
   reducer: reducers,
-  thunkMiddleware: applyMiddleware(thunkMiddleware)
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(thunkMiddleware),
+  devTools: true
 });
 
-window.store = store;
+window.__store__ = store;
 
 export default store;

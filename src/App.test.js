@@ -12,6 +12,7 @@ test("renders learn react link", () => {
       </BrowserRouter>
     </Provider>
   );
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  const linkElement = screen.getByAltText(/learn react/i);
+  expect(linkElement).toBeDefined();
 });

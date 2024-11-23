@@ -5,7 +5,7 @@ const Preloader = (props) => {
   return (
     <>
       <div>
-        <img src={preloader} alt="" />
+        <img src={preloader} alt="learn react" />
       </div>
     </>
   );

@@ -1,0 +1,5 @@
+.selectedPage {
+  font-weight: bold;
+  color: rgb(14, 175, 84);
+  border-bottom: 2px solid rgb(14, 175, 84);
+}
