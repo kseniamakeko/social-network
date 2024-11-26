@@ -3,3 +3,12 @@
   color: rgb(14, 175, 84);
   border-bottom: 2px solid rgb(14, 175, 84);
 }
+
+.pagination {
+  margin: 10px;
+}
+
+.pageNumber {
+  padding: 2px;
+  border: 1px solid black;
+}

@@ -14,11 +14,6 @@ let reducers = combineReducers({
   app: appReducer
 });
 
-// let store = configureStore({
-//   reducer: reducers,
-//   thunkMiddleware: applyMiddleware(thunkMiddleware)
-// });
-
 const store = configureStore({
   reducer: reducers,
   middleware: (getDefaultMiddleware) =>
