@@ -1,6 +1,7 @@
 {
   "name": "social-network",
   "version": "0.1.0",
+  "homepage": "https://kseniamakeko.github.io/social-network",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
@@ -23,7 +24,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +53,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^16.0.1",
+    "gh-pages": "^6.2.0",
     "react-test-renderer": "^18.3.1"
   }
 }
