@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import classes from "./Pagination.module.css";
 
-const Pagination = (props) => {
-  const {
-    totalItemsCount,
-    pageSize,
-    currentPage,
-    onPageChanged,
-    portionSize = 10
-  } = props;
-
+const Pagination = ({
+  totalItemsCount,
+  pageSize,
+  currentPage,
+  onPageChanged,
+  portionSize = 10
+}) => {
   let pagesCount = Math.ceil(totalItemsCount / pageSize);
   let pages = [];
 
@@ -26,11 +24,12 @@ const Pagination = (props) => {
     <div className={classes.pagination}>
       {portionNumber > 1 && (
         <button
+          className={classes.paginationNumber}
           onClick={() => {
             setPortionNumber(portionNumber - 1);
           }}
         >
-          Next
+          Prev
         </button>
       )}
       {pages
@@ -41,12 +40,9 @@ const Pagination = (props) => {
         .map((page) => {
           return (
             <span
-              className={
-                ({
-                  [classes.selectedPage]: currentPage === page
-                },
-                classes.pageNumber)
-              }
+              className={`${currentPage === page ? classes.selectedPage : ""} ${
+                classes.pageNumber
+              }`}
               key={page}
               onClick={(e) => {
                 onPageChanged(page);
@@ -56,13 +52,14 @@ const Pagination = (props) => {
             </span>
           );
         })}
-      {portionCount < portionNumber && (
+      {portionCount > portionNumber && (
         <button
+          className={classes.paginationNumber}
           onClick={() => {
-            setPortionNumber(portionNumber - 1);
+            setPortionNumber(portionNumber + 1);
           }}
         >
-          Prev
+          Next
         </button>
       )}
     </div>

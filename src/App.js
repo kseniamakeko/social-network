@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { connect } from "react-redux";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Nav from "./components/Nav/Nav";
@@ -6,18 +6,30 @@ import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 import { Route, Routes } from "react-router-dom";
-import DialogContainer from "./components/Dialogs/DialogContainer";
-import UsersContainer from "./components/Users/UsersContainer";
-import ProfileContainer from "./components/Content/ProfileContainer";
-import Login from "./components/Login/Login";
 import { compose } from "redux";
 import { initializeApp } from "./components/Redux/AppReducer";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./components/Redux/Redux-store";
+import Preloader from "./components/ui/preloader/Preloader";
 
 import "./App.css";
-import Preloader from "./components/ui/preloader/Preloader";
+import withSuspense from "./hoc/withSuspense";
+
+const DialogContainer = lazy(() =>
+  import("./components/Dialogs/DialogContainer")
+);
+
+const ProfileContainer = lazy(() =>
+  import("./components/Content/ProfileContainer")
+);
+const UsersContainer = lazy(() => import("./components/Users/UsersContainer"));
+const Login = lazy(() => import("./components/Login/Login"));
+
+const DialogContainerWithSuspense = withSuspense(DialogContainer);
+const ProfileContainerWithSuspense = withSuspense(ProfileContainer);
+const UsersContainerWithSuspense = withSuspense(UsersContainer);
+const LoginWithSuspense = withSuspense(Login);
 
 const App = (props) => {
   useEffect(() => {
@@ -33,14 +45,18 @@ const App = (props) => {
       <Nav />
       <div className="app-wrapper-content">
         <Routes>
-          <Route exact path="/dialogs" element={<DialogContainer />} />
+          <Route
+            exact
+            path="/dialogs"
+            element={<DialogContainerWithSuspense />}
+          />
           <Route
             exact
             path="/profile/:userId?"
-            element={<ProfileContainer />}
+            element={<ProfileContainerWithSuspense />}
           />
-          <Route exact path="/users" element={<UsersContainer />} />
-          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/users" element={<UsersContainerWithSuspense />} />
+          <Route exact path="/login" element={<LoginWithSuspense />} />
           <Route exact path="/news" element={<News />} />
           <Route exact path="/music" element={<Music />} />
           <Route exact path="/settings" element={<Settings />} />

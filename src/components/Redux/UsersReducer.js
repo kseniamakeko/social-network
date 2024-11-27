@@ -19,7 +19,6 @@ const initialState = {
 };
 
 const usersReducer = (state = initialState, action) => {
-  console.log("Action received in reducer:", action);
   switch (action.type) {
     case FOLLOW:
       return {
@@ -50,7 +49,7 @@ const usersReducer = (state = initialState, action) => {
     }
 
     case SET_TOTAL_USERS_COUNT: {
-      return { ...state, totalUsersCount: action.payload.totalUsersCount };
+      return { ...state, totalUsersCount: action.payload };
     }
 
     case SET_IS_FETCHING: {
@@ -114,7 +113,6 @@ export const requestUsers = (currentPage, pageSize) => {
     dispatch(setIsFetching(true));
     dispatch(setCurrentPage(currentPage));
     const data = await usersApi.getUsers(currentPage, pageSize);
-    console.log("Dispatching setUsers with pageSize:", pageSize);
     dispatch(setUsers(data.items));
     dispatch(setIsFetching(false));
     dispatch(setTotalUsersCount(data.totalCount));

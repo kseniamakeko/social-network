@@ -1,10 +1,10 @@
 import React from "react";
 
-// import Preloader from "../ui/preloader/Preloader";
-// import { useSelector } from "react-redux";
-// import { getUsers } from "../Redux/users-selectors";
+import { useSelector } from "react-redux";
+import { getUsers } from "../Redux/users-selectors";
 import User from "./User";
 import Pagonation from "../common/FormsControls/Pagination/Pagination";
+import classes from "./Users.module.css";
 
 const Users = ({
   currentPage,
@@ -12,17 +12,12 @@ const Users = ({
   totalUsersCount,
   pageSize,
   followingInProgress,
-  users,
   ...props
 }) => {
-  // const users = useSelector(getUsers);
-
-  // if (!users || users.length === 0) {
-  //   return <Preloader />;
-  // }
+  const users = useSelector(getUsers);
 
   return (
-    <div>
+    <div className={classes.usersPage}>
       <Pagonation
         currentPage={currentPage}
         onPageChanged={onPageChanged}

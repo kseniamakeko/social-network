@@ -42,6 +42,7 @@ class UsersContainer extends React.Component {
           follow={this.props.follow}
           unfollow={this.props.unfollow}
           followingInProgress={this.props.followingInProgress}
+          totalUsersCount={this.props.totalUsersCount}
         />
       </>
     );
@@ -49,7 +50,6 @@ class UsersContainer extends React.Component {
 }
 
 const mapStatetoProps = (state) => {
-  console.log(state.pageSize, "pagesize");
   return {
     users: getUsers(state),
     pageSize: getPageSize(state),
