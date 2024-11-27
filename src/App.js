@@ -74,7 +74,7 @@ const AppContainer = compose(connect(mapStateToProps, { initializeApp })(App));
 const SamuraiJSApp = (props) => {
   return (
     <Provider store={store}>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter basename="/social-network">
         <AppContainer />
       </BrowserRouter>
     </Provider>
