@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import {
   getStatus,
   getUserProfile,
-  updateStatus
+  updateStatus,
+  savePhoto
 } from "../Redux/ProfileReducer";
 import { useParams, useNavigate } from "react-router-dom";
 import { compose } from "redux";
@@ -14,7 +15,7 @@ function ProfileContainer(props) {
   const navigate = useNavigate();
 
   const finalUserId = userId || props.authorizedUserId;
-
+  const isOwner = finalUserId === props.authorizedUserId;
   useEffect(() => {
     if (!props.isAuth) {
       navigate("/login");
@@ -27,10 +28,12 @@ function ProfileContainer(props) {
   return (
     <div>
       <Profile
+        isOwner={isOwner}
         {...props}
         profile={props.profile}
         status={props.status}
         updateStatus={props.updateStatus}
+        savePhoto={props.savePhoto}
       />
     </div>
   );
@@ -44,5 +47,10 @@ let mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps, { getUserProfile, getStatus, updateStatus })
+  connect(mapStateToProps, {
+    getUserProfile,
+    getStatus,
+    updateStatus,
+    savePhoto
+  })
 )(ProfileContainer);

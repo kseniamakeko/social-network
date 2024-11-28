@@ -1,15 +1,5 @@
-.main img {
-  width: 1200px;
-  height: 200px;
-}
 .ava {
   margin-left: 20px;
-}
-
-.ava img {
-  width: 200px;
-  height: 220px;
-  border-radius: 10px;
 }
 
 .status {
@@ -20,4 +10,9 @@
   margin: 5px;
   padding: 5px;
   width: 200px;
+}
+
+.avatar {
+  max-width: 200px;
+  height: 200px;
 }

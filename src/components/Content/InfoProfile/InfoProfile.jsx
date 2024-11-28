@@ -1,10 +1,16 @@
 import React from "react";
 import Preloader from "../../ui/preloader/Preloader";
 import ProfileStatusHooks from "./ProfileStatusHooks";
-import userPhoto from "../../assets/image/userPic.png";
+import userPhoto from "../../../assets/image/userPic.png";
 import classes from "./InfoProfile.module.css";
 
-const InfoProfile = ({ profile, status, updateStatus }) => {
+const InfoProfile = ({ profile, status, updateStatus, isOwner, savePhoto }) => {
+  const onAvatarSelected = (e) => {
+    if (e.target.files.length) {
+      savePhoto(e.target.files[0]);
+    }
+  };
+
   if (!profile) {
     return <Preloader />;
   }
@@ -15,10 +21,16 @@ const InfoProfile = ({ profile, status, updateStatus }) => {
         <div>
           <h2 className={classes.name}>{profile.fullName}</h2>
         </div>
-        <img src={profile.photos.large || userPhoto} alt="profilePhoto" />
+        <img
+          src={profile.photos.large || userPhoto}
+          alt="profilePhoto"
+          className={classes.avatar}
+        />
+        {isOwner && <input type={"file"} onChange={onAvatarSelected} />}
         <ProfileStatusHooks
           status={status}
           updateStatus={updateStatus}
+          savePhoto={savePhoto}
           className={classes.status}
         />
         <div>{profile.contacts.facebook}</div>
