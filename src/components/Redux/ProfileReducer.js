@@ -24,24 +24,20 @@ const profileReducer = (state = initialState, action) => {
         message: action.payload,
         likesCount: 0
       };
-
       return {
         ...state,
         posts: [...state.posts, newPost]
       };
-
     case SET_USER_PROFILE:
       return {
         ...state,
         profile: action.profile
       };
-
     case SET_STATUS:
       return {
         ...state,
         status: action.status
       };
-
     case DELETE_POST:
       return {
         ...state,
@@ -101,13 +97,26 @@ export const updateStatus = (status) => async (dispatch) => {
 };
 
 export const savePhoto = (file) => async (dispatch) => {
-  console.log("photoFile", file);
-  console.log(process.env.API_KEY);
-
   let response = await profileApi.savePhoto(file);
 
   if (response.data.resultCode === 0) {
     dispatch(savePhotoSucces(response.data.data.photos));
+  }
+};
+
+export const saveProfile = (profile) => async (dispatch, getState) => {
+  const userId = getState().auth.userId;
+  try {
+    const response = await profileApi.saveProfile(profile);
+
+    if (response.data.resultCode === 0) {
+      dispatch(getUserProfile(userId));
+      return Promise.resolve(response);
+    } else {
+      return Promise.reject(response.data.messages[0]);
+    }
+  } catch (error) {
+    return Promise.reject(error);
   }
 };
 

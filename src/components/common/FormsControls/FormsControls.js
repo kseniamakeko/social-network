@@ -1,4 +1,5 @@
 import React from "react";
+import { Field } from "formik";
 import classes from "./FormsControls.module.css";
 
 const FormsControls = ({ field, form, ...props }) => {
@@ -30,8 +31,30 @@ export const Input = (props) => {
   return (
     <FormsControls {...props}>
       <div className={classes.formField}>
-        <input {...field} {...restProps} />
+        <input {...field} {...restProps} value={field.value || ""} />
       </div>
     </FormsControls>
+  );
+};
+
+export const createField = (
+  placeholder,
+  name,
+  validators,
+  component,
+  props = {},
+  text = ""
+) => {
+  return (
+    <div>
+      <Field
+        placeholder={placeholder}
+        name={name}
+        validate={validators}
+        component={component}
+        {...props}
+      />
+      {text && <span>{text}</span>}
+    </div>
   );
 };

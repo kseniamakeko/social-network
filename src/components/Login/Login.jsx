@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import validationSchemaLoginForm from "../../utils/validators/SchemaLoginForm";
-import validateEmail from "../../utils/validators/validators";
+import { validateEmail } from "../../utils/validators/validators";
 import { Input } from "../common/FormsControls/FormsControls";
 import { login } from "../Redux/AuthReducer";
 import classes from "./Login.module.css";
@@ -22,14 +22,20 @@ const Login = (props) => {
         values.password,
         values.rememberMe,
         setSubmitting,
-        setStatus
+        setStatus,
+        values.captcha
       )
     );
   };
   return (
     <div>
       <Formik
-        initialValues={{ email: "", password: "", rememberMe: false }}
+        initialValues={{
+          email: "",
+          password: "",
+          rememberMe: false,
+          captcha: ""
+        }}
         validate={validateEmail}
         validationSchema={validationSchemaLoginForm}
         onSubmit={handleSubmit}
@@ -37,7 +43,11 @@ const Login = (props) => {
         {({ isSubmitting, status }) => (
           <>
             <h1 className={classes.title}>Login</h1>
-            <LoginForm isSubmitting={isSubmitting} />
+            <LoginForm
+              isSubmitting={isSubmitting}
+              captchaUrl={props.captchaUrl}
+              values={props.values}
+            />
             {status && (
               <div className={classes["form-summary-error"]}>{status}</div>
             )}
@@ -48,7 +58,7 @@ const Login = (props) => {
   );
 };
 
-const LoginForm = ({ isSubmitting }) => {
+const LoginForm = ({ isSubmitting, captchaUrl }) => {
   return (
     <Form className={classes.loginContainer}>
       <div className={classes.formField}>
@@ -71,6 +81,19 @@ const LoginForm = ({ isSubmitting }) => {
         <Field type={"checkbox"} name={"rememberMe"} id="rememberMe" />
         <label htmlFor="rememberMe">Remember Me</label>
       </div>
+      {captchaUrl && (
+        <>
+          <img src={captchaUrl} alt="CAPTCHA" />
+          <div>
+            <Field
+              name="captcha"
+              type="text"
+              placeholder="Symbols from image"
+              component={Input}
+            />
+          </div>
+        </>
+      )}
       <div>
         <button
           className={classes.loginButtonForm}
@@ -85,7 +108,8 @@ const LoginForm = ({ isSubmitting }) => {
 };
 
 const mapStatetoProps = (state) => ({
-  isAuth: state.auth.isAuth
+  isAuth: state.auth.isAuth,
+  captchaUrl: state.auth.captchaUrl
 });
 
 export default connect(mapStatetoProps, { login })(Login);

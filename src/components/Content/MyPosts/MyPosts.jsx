@@ -12,7 +12,7 @@ const MyPosts = () => {
   const posts = useSelector((state) => state.profile.posts);
 
   let postsElement = posts.map((post) => (
-    <Post message={post.message} key={post.id} like={post.likesCount} />
+    <Post key={post.id} message={post.message} like={post.likesCount} />
   ));
 
   return (

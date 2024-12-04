@@ -5,7 +5,8 @@ import {
   getStatus,
   getUserProfile,
   updateStatus,
-  savePhoto
+  savePhoto,
+  saveProfile
 } from "../Redux/ProfileReducer";
 import { useParams, useNavigate } from "react-router-dom";
 import { compose } from "redux";
@@ -51,6 +52,7 @@ export default compose(
     getUserProfile,
     getStatus,
     updateStatus,
-    savePhoto
+    savePhoto,
+    saveProfile
   })
 )(ProfileContainer);
