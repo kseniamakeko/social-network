@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import cn from "classnames";
 import classes from "./Pagination.module.css";
 
 const Pagination = ({
@@ -40,9 +41,10 @@ const Pagination = ({
         .map((page) => {
           return (
             <span
-              className={`${currentPage === page ? classes.selectedPage : ""} ${
+              className={cn(
+                currentPage === page && classes.selectedPage,
                 classes.pageNumber
-              }`}
+              )}
               key={page}
               onClick={(e) => {
                 onPageChanged(page);

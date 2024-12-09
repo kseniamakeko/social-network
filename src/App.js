@@ -5,7 +5,7 @@ import Nav from "./components/Nav/Nav";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { compose } from "redux";
 import { initializeApp } from "./components/Redux/AppReducer";
 import { BrowserRouter } from "react-router-dom";
@@ -32,8 +32,13 @@ const UsersContainerWithSuspense = withSuspense(UsersContainer);
 const LoginWithSuspense = withSuspense(Login);
 
 const App = (props) => {
+  const catchUnhandeledErrors = (reason, promise) => {
+    alert("Some errors occured");
+  };
   useEffect(() => {
     props.initializeApp();
+    window.addEventListener("unhandledrejection", catchUnhandeledErrors);
+    window.removeEventListener("unhandledrejection", catchUnhandeledErrors);
   }, [props]);
 
   if (!props.initialized) {
@@ -45,6 +50,7 @@ const App = (props) => {
       <Nav />
       <div className="app-wrapper-content">
         <Routes>
+          <Route exact path="/" element={<Navigate to={"/profile"} />} />
           <Route
             exact
             path="/dialogs"
@@ -60,6 +66,7 @@ const App = (props) => {
           <Route exact path="/news" element={<News />} />
           <Route exact path="/music" element={<Music />} />
           <Route exact path="/settings" element={<Settings />} />
+          <Route exact path="*" element={<div>404 Not Found</div>} />
         </Routes>
       </div>
     </div>
