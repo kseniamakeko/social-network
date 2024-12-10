@@ -16,12 +16,12 @@ import Preloader from "./components/ui/preloader/Preloader";
 import "./App.css";
 import withSuspense from "./hoc/withSuspense";
 
-const DialogContainer = lazy(() =>
-  import("./components/Dialogs/DialogContainer")
+const DialogContainer = lazy(
+  () => import("./components/Dialogs/DialogContainer")
 );
 
-const ProfileContainer = lazy(() =>
-  import("./components/Content/ProfileContainer")
+const ProfileContainer = lazy(
+  () => import("./components/Content/ProfileContainer")
 );
 const UsersContainer = lazy(() => import("./components/Users/UsersContainer"));
 const Login = lazy(() => import("./components/Login/Login"));
@@ -31,10 +31,7 @@ const ProfileContainerWithSuspense = withSuspense(ProfileContainer);
 const UsersContainerWithSuspense = withSuspense(UsersContainer);
 const LoginWithSuspense = withSuspense(Login);
 
-const App = (props) => {
-  const catchUnhandeledErrors = (reason, promise) => {
-    alert("Some errors occured");
-  };
+const App: React.FC = (props) => {
   useEffect(() => {
     props.initializeApp();
     window.addEventListener("unhandledrejection", catchUnhandeledErrors);

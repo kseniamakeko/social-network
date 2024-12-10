@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { addPostActionCreator } from "../../Redux/ProfileReducer";
 import { Formik, Form, Field } from "formik";
 import { useDispatch } from "react-redux";
-import Post from "../MyPosts/Posts/Post";
+import Post from "./Posts/Post";
 import validationSchemaPost from "../../../utils/validators/SchemaPost";
 import { Textarea } from "../../common/FormsControls/FormsControls";
 import classes from "./MyPosts.module.css";

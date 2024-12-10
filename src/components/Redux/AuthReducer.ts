@@ -5,14 +5,16 @@ const RESET_USER_AUTH_DATA = "RESET_USER_AUTH_DATA";
 const GET_CAPTCHA_URL_SUCCESS = "GET_CAPTCHA_URL_SUCCESS";
 
 let initialState = {
-  userId: null,
-  email: null,
-  login: null,
+  userId: null as number | null,
+  email: null as string | null,
+  login: null as string | null,
   isAuth: false,
-  captchaUrl: null // if null then thr capthcha is not required
+  captchaUrl: null as string | null // if null then thr capthcha is not required
 };
 
-const authReducer = (state = initialState, action) => {
+export type InitialSateType = typeof initialState;
+
+const authReducer = (state = initialState, action: any): InitialSateType => {
   switch (action.type) {
     case SET_USER_DATA:
     case GET_CAPTCHA_URL_SUCCESS:
@@ -34,6 +36,18 @@ const resetAuthDataCA = () => {
   return { type: RESET_USER_AUTH_DATA };
 };
 
+type SetAuthUserDataActionPayloadType = {
+  userId: number | null;
+  email: string | null;
+  login: string | null;
+  isAuth: boolean;
+};
+
+type SetAuthUserDataActionType = {
+  type: typeof SET_USER_DATA;
+  payload: SetAuthUserDataActionPayloadType;
+};
+
 export const setAuthUserData = (userId, email, login, isAuth) => ({
   type: SET_USER_DATA,
   payload: { userId, email, login, isAuth }
@@ -44,7 +58,7 @@ export const getCaptchaUrlSuccess = (captchaUrl) => ({
   payload: { captchaUrl }
 });
 
-export const getAuthUserData = () => async (dispatch) => {
+export const getAuthUserData = () => async (dispatch: any) => {
   let response = await authApi.getMe();
   if (response.data.resultCode === 0) {
     let { id, email, login } = response.data.data;
@@ -82,7 +96,7 @@ export const login =
       setSubmitting(false);
     }
   };
-export const getCaptchaUrl = () => async (dispatch) => {
+export const getCaptchaUrl = () => async (dispatch: any) => {
   try {
     const response = await securityApi.getCaptcha();
     const captchaUrl = response.data.url;
@@ -92,7 +106,7 @@ export const getCaptchaUrl = () => async (dispatch) => {
   }
 };
 
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch: any) => {
   let response = await authApi.logout();
   if (response.data.resultCode === 0) {
     dispatch(resetAuthDataCA());

@@ -2,9 +2,9 @@ import {
   createField,
   Input,
   Textarea
-} from "../../common/FormsControls/FormsControls";
+} from "../../common/FormsControls/FormsControls.js";
 import { Form, Formik } from "formik";
-import validationSchemaProfileDataForm from "../../../utils/validators/SchemaProfileFormData";
+import validationSchemaProfileDataForm from "../../../utils/validators/SchemaProfileFormData.jsx";
 import {
   validateFullName,
   validateContacts
