@@ -32,8 +32,11 @@ const authReducer = (state = initialState, action: any): InitialSateType => {
   }
 };
 
-const resetAuthDataCA = () => {
+const resetAuthDataCA = (): resetAuthDataCAType => {
   return { type: RESET_USER_AUTH_DATA };
+};
+type resetAuthDataCAType = {
+  type: typeof RESET_USER_AUTH_DATA;
 };
 
 type SetAuthUserDataActionPayloadType = {
@@ -48,15 +51,26 @@ type SetAuthUserDataActionType = {
   payload: SetAuthUserDataActionPayloadType;
 };
 
-export const setAuthUserData = (userId, email, login, isAuth) => ({
+export const setAuthUserData = (
+  userId: number | null,
+  email: string | null,
+  login: string | null,
+  isAuth: boolean
+): SetAuthUserDataActionType => ({
   type: SET_USER_DATA,
   payload: { userId, email, login, isAuth }
 });
 
-export const getCaptchaUrlSuccess = (captchaUrl) => ({
+export const getCaptchaUrlSuccess = (
+  captchaUrl: string
+): getCaptchaUrlSuccessActionCreatorType => ({
   type: GET_CAPTCHA_URL_SUCCESS,
   payload: { captchaUrl }
 });
+type getCaptchaUrlSuccessActionCreatorType = {
+  type: typeof GET_CAPTCHA_URL_SUCCESS;
+  payload: { captchaUrl: string };
+};
 
 export const getAuthUserData = () => async (dispatch: any) => {
   let response = await authApi.getMe();
@@ -67,14 +81,23 @@ export const getAuthUserData = () => async (dispatch: any) => {
 };
 
 export const login =
-  (email, password, rememberMe, setSubmitting, setStatus, captcha) =>
-  async (dispatch) => {
+  (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    setSubmitting: (isSubmitting: boolean) => void,
+    setStatus: (status: string | null) => void,
+    captcha?: string
+  ) =>
+  async (dispatch: any) => {
     try {
+      const formattedCaptcha = captcha !== undefined ? captcha : null;
+
       const response = await authApi.login(
         email,
         password,
         rememberMe,
-        captcha
+        formattedCaptcha as null | undefined
       );
       if (response.data.resultCode === 0) {
         dispatch(getAuthUserData());
