@@ -1,5 +1,6 @@
 import { usersApi } from "../../api/api";
 import { updateObjectInArray } from "../../utils/object-helpers/object-helpers";
+import { UsersType } from "../../types/types";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -10,7 +11,7 @@ const SET_IS_FETCHING = "SET_IS_FETCHING";
 const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS";
 
 const initialState = {
-  users: [],
+  users: [] as Array<UsersType>,
   pageSize: 5,
   totalUsersCount: 0,
   currentPage: 1,
@@ -18,7 +19,9 @@ const initialState = {
   followingInProgress: []
 };
 
-const usersReducer = (state = initialState, action) => {
+type initialStateType = typeof initialState;
+
+const usersReducer = (state = initialState, action: any): initialStateType => {
   switch (action.type) {
     case FOLLOW:
       return {
@@ -40,7 +43,7 @@ const usersReducer = (state = initialState, action) => {
     case SET_USERS: {
       return {
         ...state,
-        users: action.payload.users
+        users: action.users
       };
     }
 
@@ -68,30 +71,47 @@ const usersReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export const setPageSize = (pageSize) => ({
-  type: "SET_PAGE_SIZE",
-  payload: pageSize
-});
-
-export const followSucess = (userId) => ({
+type followSucessActionCreatorType = {
+  type: typeof FOLLOW;
+  userId: number;
+};
+export const followSucess = (
+  userId: number
+): followSucessActionCreatorType => ({
   type: FOLLOW,
   userId
 });
 
-export const unfollowSucess = (userId) => ({
+type unfollowSucessActionCreatorType = {
+  type: typeof UNFOLLOW;
+  userId: number;
+};
+export const unfollowSucess = (
+  userId: number
+): unfollowSucessActionCreatorType => ({
   type: UNFOLLOW,
   userId
 });
 
-export const setUsers = (users) => ({
+export const setUsers = (users: UsersType): setUsersActionCreatorType => ({
   type: SET_USERS,
-  payload: { users }
+  users
 });
-export const setCurrentPage = (currentPage) => ({
+type setUsersActionCreatorType = {
+  type: typeof SET_USERS;
+  users: UsersType;
+};
+
+export const setCurrentPage = (
+  currentPage: number
+): setCurrentPageActionCreatorType => ({
   type: SET_CURRENT_PAGE,
   currentPage
 });
+type setCurrentPageActionCreatorType = {
+  type: typeof SET_CURRENT_PAGE;
+  currentPage: number;
+};
 
 export const setTotalUsersCount = (totalUsersCount) => ({
   type: SET_TOTAL_USERS_COUNT,

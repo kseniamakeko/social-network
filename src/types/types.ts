@@ -8,4 +8,21 @@ export type ProfileType = {
 };
 
 export type ContactsType = {};
-export type PhotosType = {};
+
+export type PhotosType = {
+  small: string | null;
+  large: string | null;
+};
+
+export type PostType = {
+  id: number;
+  message: string;
+  likesCount: number;
+};
+
+export type UsersType = {
+  id: number;
+  name: string;
+  status: string;
+  photos: PhotosType;
+};

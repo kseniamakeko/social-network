@@ -1,6 +1,6 @@
 import { usersApi } from "../../api/api";
 import { profileApi } from "../../api/api";
-import { PhotosType, ProfileType } from "../../types/types";
+import { PhotosType, ProfileType, PostType } from "../../types/types";
 
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
@@ -8,17 +8,11 @@ const SET_STATUS = "SET_STATUS";
 const DELETE_POST = "DELETE_POST";
 const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS";
 
-type postType = {
-  id: number;
-  message: string;
-  likesCount: number;
-};
-
 let initialState = {
   posts: [
     { id: 1, message: "How are you?", likesCount: 12 },
     { id: 2, message: "I like the world", likesCount: 11 }
-  ] as Array<postType>,
+  ] as Array<PostType>,
   profile: null as ProfileType | null,
   status: ""
 };
