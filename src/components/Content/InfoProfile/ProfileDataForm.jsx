@@ -4,7 +4,7 @@ import {
   Textarea
 } from "../../common/FormsControls/FormsControls.js";
 import { Form, Formik } from "formik";
-import validationSchemaProfileDataForm from "../../../utils/validators/SchemaProfileFormData.jsx";
+import validationSchemaProfileDataForm from "../../../utils/validators/SchemaProfileFormData.js";
 import {
   validateFullName,
   validateContacts
