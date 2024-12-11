@@ -1,4 +1,4 @@
-import React, { useEffect, lazy } from "react";
+import React, { lazy, Component } from "react";
 import { connect } from "react-redux";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Nav from "./components/Nav/Nav";
@@ -31,44 +31,98 @@ const ProfileContainerWithSuspense = withSuspense(ProfileContainer);
 const UsersContainerWithSuspense = withSuspense(UsersContainer);
 const LoginWithSuspense = withSuspense(Login);
 
-const App: React.FC = (props) => {
-  useEffect(() => {
-    props.initializeApp();
-    window.addEventListener("unhandledrejection", catchUnhandeledErrors);
-    window.removeEventListener("unhandledrejection", catchUnhandeledErrors);
-  }, [props]);
+// const App = (props) => {
+//   // useEffect(() => {
+//   //   console.log("use effect");
+//   //   props.initializeApp();
+//   // }, []);
 
-  if (!props.initialized) {
-    return <Preloader />;
+//   if (!props.initialized) {
+//     return <Preloader />;
+//   }
+//   return (
+//     <div className="app-wrapper">
+//       <HeaderContainer />
+//       <Nav />
+//       <div className="app-wrapper-content">
+//         <Routes>
+//           <Route exact path="/" element={<Navigate to={"/profile"} />} />
+//           <Route
+//             exact
+//             path="/dialogs"
+//             element={<DialogContainerWithSuspense />}
+//           />
+//           <Route
+//             exact
+//             path="/profile/:userId?"
+//             element={<ProfileContainerWithSuspense />}
+//           />
+//           <Route exact path="/users" element={<UsersContainerWithSuspense />} />
+//           <Route exact path="/login" element={<LoginWithSuspense />} />
+//           <Route exact path="/news" element={<News />} />
+//           <Route exact path="/music" element={<Music />} />
+//           <Route exact path="/settings" element={<Settings />} />
+//           <Route exact path="*" element={<div>404 Not Found</div>} />
+//         </Routes>
+//       </div>
+//     </div>
+//   );
+// };
+
+class App extends Component {
+  catchAllUnhandledErrors = (e) => {
+    alert("Some error occured");
+  };
+
+  componentDidMount() {
+    this.props.initializeApp();
+    window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors);
   }
-  return (
-    <div className="app-wrapper">
-      <HeaderContainer />
-      <Nav />
-      <div className="app-wrapper-content">
-        <Routes>
-          <Route exact path="/" element={<Navigate to={"/profile"} />} />
-          <Route
-            exact
-            path="/dialogs"
-            element={<DialogContainerWithSuspense />}
-          />
-          <Route
-            exact
-            path="/profile/:userId?"
-            element={<ProfileContainerWithSuspense />}
-          />
-          <Route exact path="/users" element={<UsersContainerWithSuspense />} />
-          <Route exact path="/login" element={<LoginWithSuspense />} />
-          <Route exact path="/news" element={<News />} />
-          <Route exact path="/music" element={<Music />} />
-          <Route exact path="/settings" element={<Settings />} />
-          <Route exact path="*" element={<div>404 Not Found</div>} />
-        </Routes>
+
+  componentWillUnmount() {
+    window.removeEventListener(
+      "unhandledrejection",
+      this.catchAllUnhandledErrors
+    );
+  }
+
+  render() {
+    if (!this.props.initialized) {
+      return <Preloader />;
+    }
+    return (
+      <div className="app-wrapper">
+        <HeaderContainer />
+        <Nav />
+        <div className="app-wrapper-content">
+          <Routes>
+            <Route exact path="/" element={<Navigate to={"/profile"} />} />
+            <Route
+              exact
+              path="/dialogs"
+              element={<DialogContainerWithSuspense />}
+            />
+            <Route
+              exact
+              path="/profile/:userId?"
+              element={<ProfileContainerWithSuspense />}
+            />
+            <Route
+              exact
+              path="/users"
+              element={<UsersContainerWithSuspense />}
+            />
+            <Route exact path="/login" element={<LoginWithSuspense />} />
+            <Route exact path="/news" element={<News />} />
+            <Route exact path="/music" element={<Music />} />
+            <Route exact path="/settings" element={<Settings />} />
+            <Route exact path="*" element={<div>404 Not Found</div>} />
+          </Routes>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const mapStateToProps = (state) => ({
   initialized: state.app.initialized

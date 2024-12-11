@@ -1,0 +1,15 @@
+{
+  "root": [
+    "./src/components/redux/appreducer.ts",
+    "./src/components/redux/authreducer.ts",
+    "./src/components/redux/messagesreducer.ts",
+    "./src/components/redux/profilereducer.test.ts",
+    "./src/components/redux/profilereducer.ts",
+    "./src/components/redux/redux-store.ts",
+    "./src/components/redux/usersreducer.tsx",
+    "./src/components/redux/users-selectors.ts",
+    "./src/types/types.ts"
+  ],
+  "errors": true,
+  "version": "5.6.3"
+}

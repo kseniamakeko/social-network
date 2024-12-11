@@ -2,13 +2,13 @@ import {
   createField,
   Input,
   Textarea
-} from "../../common/FormsControls/FormsControls.js";
+} from "../../common/FormsControls/FormsControls";
 import { Form, Formik } from "formik";
-import validationSchemaProfileDataForm from "../../../utils/validators/SchemaProfileFormData.js";
+import validationSchemaProfileDataForm from "../../../utils/validators/SchemaProfileFormData";
 import {
   validateFullName,
   validateContacts
-} from "../../../utils/validators/validators.js";
+} from "../../../utils/validators/validators";
 import classes from "./InfoProfile.module.css";
 
 const ProfileDataForm = ({ profile, onSubmit }) => {

@@ -7,7 +7,16 @@ export type ProfileType = {
   photos: PhotosType;
 };
 
-export type ContactsType = {};
+export type ContactsType = {
+  github: string;
+  vk: string;
+  facebook: string;
+  instagram: string;
+  twitter: string;
+  website: string;
+  youtube: string;
+  mainLink: string;
+};
 
 export type PhotosType = {
   small: string | null;
@@ -25,4 +34,5 @@ export type UsersType = {
   name: string;
   status: string;
   photos: PhotosType;
+  followed: boolean;
 };
