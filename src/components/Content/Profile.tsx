@@ -1,9 +1,20 @@
 import React from "react";
-
 import InfoProfile from "./InfoProfile/InfoProfile";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import { ProfileType } from "../../types/types";
 
-const Profile = (props) => {
+type PropsType = {
+  isOwner: boolean;
+  profile: ProfileType | null;
+  status: string;
+  updateStatus: (status: string) => void;
+  savePhoto: (file: File) => void;
+  saveProfile: (profile: ProfileType) => void;
+  goToEditMode: () => void;
+  editMode: boolean;
+};
+
+const Profile: React.FC<PropsType> = (props) => {
   return (
     <div>
       <InfoProfile
@@ -13,6 +24,8 @@ const Profile = (props) => {
         updateStatus={props.updateStatus}
         savePhoto={props.savePhoto}
         saveProfile={props.saveProfile}
+        goToEditMode={props.goToEditMode}
+        editMode={props.editMode}
       />
       <MyPostsContainer />
     </div>

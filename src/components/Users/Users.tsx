@@ -5,16 +5,29 @@ import { getUsers } from "../Redux/users-selectors";
 import User from "./User";
 import Pagonation from "../common/FormsControls/Pagination/Pagination";
 import classes from "./Users.module.css";
+import { UsersType } from "../../types/types";
 
-const Users = ({
+type PropsType = {
+  totalUsersCount: number;
+  pageSize: number;
+  currentPage: number;
+  onPageChanged: (pageNumber: number) => void;
+  followingInProgress: Array<number>;
+  unfollow: (userId: number) => void;
+  follow: (userId: number) => void;
+  users: Array<UsersType>;
+};
+
+const Users: React.FC<PropsType> = ({
   currentPage,
   onPageChanged,
   totalUsersCount,
   pageSize,
   followingInProgress,
+  users,
   ...props
 }) => {
-  const users = useSelector(getUsers);
+  // const users: Array<UsersType> = useSelector(getUsers);
 
   return (
     <div className={classes.usersPage}>
@@ -27,7 +40,7 @@ const Users = ({
       {users.map((u) => (
         <User
           user={u}
-          followingInProgress={props.followingInProgress}
+          followingInProgress={followingInProgress}
           key={u.id}
           unfollow={props.unfollow}
           follow={props.follow}

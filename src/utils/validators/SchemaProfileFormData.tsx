@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { InferType } from "yup";
 
 const validationSchemaProfileDataForm = Yup.object({
   fullName: Yup.string().required("Full Name is required"),
@@ -7,7 +8,7 @@ const validationSchemaProfileDataForm = Yup.object({
     "Professional skills are required"
   ),
   aboutMe: Yup.string().required("About Me is required"),
-  contacts: Yup.object().shape({
+  contacts: Yup.object({
     facebook: Yup.string().url("Invalid URL").nullable(),
     twitter: Yup.string().url("Invalid URL").nullable(),
     vk: Yup.string().url("Invalid URL").nullable(),
@@ -18,5 +19,7 @@ const validationSchemaProfileDataForm = Yup.object({
     website: Yup.string().url("Invalid URL").nullable()
   })
 });
+
+export type ProfileFormData = InferType<typeof validationSchemaProfileDataForm>;
 
 export default validationSchemaProfileDataForm;

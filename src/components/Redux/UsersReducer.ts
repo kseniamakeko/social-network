@@ -17,7 +17,7 @@ const initialState = {
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,
-  followingInProgress: [] as Array<number>
+  followingInProgress: [] as Array<number> // array of users id
 };
 
 type initialStateType = typeof initialState;
@@ -93,13 +93,15 @@ export const unfollowSucess = (
   userId
 });
 
-export const setUsers = (users: UsersType): setUsersActionCreatorType => ({
+export const setUsers = (
+  users: Array<UsersType>
+): setUsersActionCreatorType => ({
   type: SET_USERS,
   users
 });
 type setUsersActionCreatorType = {
   type: typeof SET_USERS;
-  users: UsersType;
+  users: Array<UsersType>;
 };
 
 export const setCurrentPage = (

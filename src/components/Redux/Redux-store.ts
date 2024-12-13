@@ -6,7 +6,7 @@ import authReducer from "./AuthReducer";
 import { thunk as thunkMiddleware } from "redux-thunk";
 import appReducer from "./AppReducer";
 
-let reducers = combineReducers({
+let rootReducers = combineReducers({
   profile: profileReducer,
   messages: messagesReducer,
   users: usersReducer,
@@ -14,13 +14,16 @@ let reducers = combineReducers({
   app: appReducer
 });
 
+type RootReducerType = typeof rootReducers;
+export type AppStateType = ReturnType<RootReducerType>;
+
 const store = configureStore({
-  reducer: reducers,
+  reducer: rootReducers,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunkMiddleware),
   devTools: true
 });
-
+// @ts-ignore
 window.__store__ = store;
 
 export default store;
