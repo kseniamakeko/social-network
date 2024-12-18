@@ -24,7 +24,7 @@ type MapDispatchPropsType = {
 };
 
 type MapStatePropsType = {
-  profile: ProfileType;
+  profile: ProfileType | null;
   status: string;
   authorizedUserId: number | null;
   isAuth: boolean;
@@ -44,6 +44,7 @@ function ProfileContainer(props: PropsType) {
     ? parseInt(userId, 10) || null
     : props.authorizedUserId;
   const isOwner = finalUserId === props.authorizedUserId;
+
   useEffect(() => {
     if (!props.isAuth) {
       navigate("/login");
@@ -54,10 +55,6 @@ function ProfileContainer(props: PropsType) {
       props.getStatus(finalUserId);
     }
   }, [finalUserId, props.isAuth, navigate]);
-
-  // const goToEditMode = () => {
-  //   console.log("GoToEditMode");
-  // };
 
   return (
     <div>

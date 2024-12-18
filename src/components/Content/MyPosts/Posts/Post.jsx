@@ -1,6 +1,10 @@
 import React from "react";
 import classes from "./Post.module.css";
 
+// type PropsType = {
+//   message: string;
+// };
+
 const Post = (props) => {
   return (
     <>

@@ -27,9 +27,11 @@ let initialState = {
 
 export type initialSateType = typeof initialState;
 
+type ActionType = sendMessageCreatorActionType;
+
 const messagesReducer = (
   state = initialState,
-  action: any
+  action: ActionType
 ): initialSateType => {
   switch (action.type) {
     case SEND_MESSAGE: {

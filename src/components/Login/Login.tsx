@@ -1,21 +1,58 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch as useReduxDispatch } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import validationSchemaLoginForm from "../../utils/validators/SchemaLoginForm";
 import { validateEmail } from "../../utils/validators/validators";
 import { Input } from "../common/FormsControls/FormsControls";
-import { login } from "../Redux/AuthReducer.ts";
+import { login } from "../Redux/AuthReducer";
 import classes from "./Login.module.css";
+import { AppStateType } from "../Redux/Redux-store";
+import { ThunkDispatch } from "redux-thunk";
+import { Action } from "redux";
 
-const Login = (props) => {
+type MapStatePropsType = {
+  captchaUrl: string | null;
+  isAuth: boolean;
+};
+
+type MapDispatchPropsType = {
+  login: (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    setSubmitting: (isSubmitting: boolean) => void,
+    setStatus: (status: string | null) => void,
+    captcha?: string
+  ) => Promise<void>;
+};
+
+type LoginFormValues = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha: string;
+};
+
+const Login: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
+  const useDispatch = () =>
+    useReduxDispatch<ThunkDispatch<AppStateType, unknown, Action>>();
   const dispatch = useDispatch();
 
   if (props.isAuth) {
     return <Navigate to={"/profile"} />;
   }
 
-  const handleSubmit = (values, { setSubmitting, setStatus }) => {
+  const handleSubmit = (
+    values: LoginFormValues,
+    {
+      setSubmitting,
+      setStatus
+    }: {
+      setSubmitting: (isSubmitting: boolean) => void;
+      setStatus: (status: string | null) => void;
+    }
+  ) => {
     dispatch(
       login(
         values.email,
@@ -25,7 +62,7 @@ const Login = (props) => {
         setStatus,
         values.captcha
       )
-    );
+    ).finally(() => setSubmitting(false));
   };
   return (
     <div>
@@ -46,7 +83,6 @@ const Login = (props) => {
             <LoginForm
               isSubmitting={isSubmitting}
               captchaUrl={props.captchaUrl}
-              values={props.values}
             />
             {status && (
               <div className={classes["form-summary-error"]}>{status}</div>
@@ -58,7 +94,12 @@ const Login = (props) => {
   );
 };
 
-const LoginForm = ({ isSubmitting, captchaUrl }) => {
+type LoginFormProps = {
+  isSubmitting: boolean;
+  captchaUrl: string | null;
+};
+
+const LoginForm: React.FC<LoginFormProps> = ({ isSubmitting, captchaUrl }) => {
   return (
     <Form className={classes.loginContainer}>
       <div className={classes.formField}>
@@ -100,14 +141,14 @@ const LoginForm = ({ isSubmitting, captchaUrl }) => {
           type={"submit"}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Logging in..." : "Login"}
+          {isSubmitting ? "Logging in..." : "L ogin"}
         </button>
       </div>
     </Form>
   );
 };
 
-const mapStatetoProps = (state) => ({
+const mapStatetoProps = (state: AppStateType): MapStatePropsType => ({
   isAuth: state.auth.isAuth,
   captchaUrl: state.auth.captchaUrl
 });

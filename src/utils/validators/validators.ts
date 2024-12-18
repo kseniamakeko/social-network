@@ -1,5 +1,5 @@
-export const validateEmail = (values) => {
-  const errors = {};
+export const validateEmail = (values: { email: string }) => {
+  const errors: { email?: string } = {};
   if (!values.email) {
     errors.email = "Email is required";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
@@ -8,18 +8,20 @@ export const validateEmail = (values) => {
   return errors;
 };
 
-export const validateContacts = (values) => {
-  const errors = {};
+export const validateContacts = (values: {
+  contacts: { [key: string]: string };
+}) => {
+  const errors: { contacts?: { [key: string]: string } } = {};
   const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-]*)*\/?$/;
-
   errors.contacts = {};
 
   Object.keys(values.contacts).forEach((key) => {
     const value = values.contacts[key];
     if (value && !urlRegex.test(value)) {
-      errors.contacts[key] = `${key} must be a valid URL`;
+      errors.contacts![key] = `${key} must be a valid URL`;
     }
   });
+
   if (Object.keys(errors.contacts).length === 0) {
     delete errors.contacts;
   }
@@ -27,8 +29,8 @@ export const validateContacts = (values) => {
   return errors;
 };
 
-export const validateFullName = (values) => {
-  const errors = {};
+export const validateFullName = (values: { fullName: string }) => {
+  const errors: { fullName?: string } = {};
   if (!values.fullName) {
     errors.fullName = "Full name is required";
   } else if (!/^[a-zA-Z\s]+$/.test(values.fullName)) {

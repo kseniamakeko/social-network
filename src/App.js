@@ -24,7 +24,7 @@ const ProfileContainer = lazy(() =>
   import("./components/Content/ProfileContainer")
 );
 const UsersContainer = lazy(() => import("./components/Users/UsersContainer"));
-const Login = lazy(() => import("./components/Login/Login.sx"));
+const Login = lazy(() => import("./components/Login/Login.tsx"));
 
 const DialogContainerWithSuspense = withSuspense(DialogContainer);
 const ProfileContainerWithSuspense = withSuspense(ProfileContainer);

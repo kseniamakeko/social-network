@@ -1,4 +1,7 @@
-import { authApi, securityApi } from "../../api/api";
+import { Dispatch, Action } from "redux";
+import { authApi, ResultCodeEnum, securityApi } from "../../api/api";
+import { AppStateType } from "./Redux-store";
+import { ThunkAction } from "redux-thunk";
 
 const SET_USER_DATA = "SET_USER_DATA";
 const RESET_USER_AUTH_DATA = "RESET_USER_AUTH_DATA";
@@ -13,8 +16,15 @@ let initialState = {
 };
 
 export type InitialSateType = typeof initialState;
+type ActionType =
+  | resetAuthDataCAType
+  | SetAuthUserDataActionType
+  | getCaptchaUrlSuccessActionCreatorType;
 
-const authReducer = (state = initialState, action: any): InitialSateType => {
+const authReducer = (
+  state = initialState,
+  action: ActionType
+): InitialSateType => {
   switch (action.type) {
     case SET_USER_DATA:
     case GET_CAPTCHA_URL_SUCCESS:
@@ -72,13 +82,24 @@ type getCaptchaUrlSuccessActionCreatorType = {
   payload: { captchaUrl: string };
 };
 
-export const getAuthUserData = () => async (dispatch: any) => {
-  let response = await authApi.getMe();
-  if (response.data.resultCode === 0) {
-    let { id, email, login } = response.data.data;
-    dispatch(setAuthUserData(id, email, login, true));
-  }
-};
+type DispatchType = Dispatch<ActionType>;
+type GetStateType = () => AppStateType;
+
+type ThunkType = ThunkAction<
+  Promise<void>,
+  AppStateType,
+  unknown,
+  Action<string>
+>;
+
+export const getAuthUserData =
+  (): ThunkType => async (dispatch: DispatchType, getState: GetStateType) => {
+    let meData = await authApi.getMe();
+    if (meData.resultCode === ResultCodeEnum.Success) {
+      let { id, email, login } = meData.data;
+      dispatch(setAuthUserData(id, email, login, true));
+    }
+  };
 
 export const login =
   (
@@ -88,27 +109,27 @@ export const login =
     setSubmitting: (isSubmitting: boolean) => void,
     setStatus: (status: string | null) => void,
     captcha?: string
-  ) =>
-  async (dispatch: any) => {
+  ): ThunkType =>
+  async (dispatch) => {
     try {
       const formattedCaptcha = captcha !== undefined ? captcha : null;
 
-      const response = await authApi.login(
+      const loginData = await authApi.login(
         email,
         password,
         rememberMe,
-        formattedCaptcha as null | undefined
+        formattedCaptcha as null
       );
-      if (response.data.resultCode === 0) {
+      if (loginData.resultCode === ResultCodeEnum.Success) {
         dispatch(getAuthUserData());
         setStatus(null);
       } else {
-        if (response.data.resultCode === 10) {
+        if (loginData.resultCode === ResultCodeEnum.CaptchaIsRequired) {
           dispatch(getCaptchaUrl());
         }
         const errorMessage =
-          response.data.messages.length > 0
-            ? response.data.messages[0]
+          loginData.messages.length > 0
+            ? loginData.messages[0]
             : "An error occurred. Please try again.";
         setStatus(errorMessage);
       }
@@ -119,21 +140,24 @@ export const login =
       setSubmitting(false);
     }
   };
-export const getCaptchaUrl = () => async (dispatch: any) => {
-  try {
-    const response = await securityApi.getCaptcha();
-    const captchaUrl = response.data.url;
-    dispatch(getCaptchaUrlSuccess(captchaUrl));
-  } catch (error) {
-    console.error("Failed to fetch CAPTCHA URL:", error);
-  }
-};
 
-export const logout = () => async (dispatch: any) => {
-  let response = await authApi.logout();
-  if (response.data.resultCode === 0) {
-    dispatch(resetAuthDataCA());
-  }
-};
+export const getCaptchaUrl =
+  (): ThunkType => async (dispatch: DispatchType, getState: GetStateType) => {
+    try {
+      const response = await securityApi.getCaptcha();
+      const captchaUrl = response.data.url;
+      dispatch(getCaptchaUrlSuccess(captchaUrl));
+    } catch (error) {
+      console.error("Failed to fetch CAPTCHA URL:", error);
+    }
+  };
+
+export const logout =
+  (): ThunkType => async (dispatch: DispatchType, getState: GetStateType) => {
+    let response = await authApi.logout();
+    if (response.data.resultCode === 0) {
+      dispatch(resetAuthDataCA());
+    }
+  };
 
 export default authReducer;

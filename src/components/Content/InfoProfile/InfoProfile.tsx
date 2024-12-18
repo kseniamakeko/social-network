@@ -14,7 +14,7 @@ type PropsType = {
   profile: ProfileFormData | null;
   status: string;
   isOwner: boolean;
-  savePhoto: (file: File) => void;
+  savePhoto: (file: any) => void;
   saveProfile: (formData: ProfileFormData) => void;
   updateStatus: (status: string) => void;
   goToEditMode: () => void;
